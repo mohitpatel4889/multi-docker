@@ -5,19 +5,6 @@ services:
 before_install:
    - docker build -t mohitpatel4889/react-test -f ./client/Dockerfile.dev .
 
-deploy:
-  edge: true
-  provider: elasticbeanstalk
-  region: "us-east-2"
-  app: "docker"
-  env: "docker-env-1"  
-  bucket_name: "elasticbeanstalk-us-east-2-396372329757"
-  bucket_path: "docker"
-  on:
-    branch: master
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key:
-    secure: "$AWS_SECRET_KEY"
 
 script:
  - docker run -e CI=true mohitpatel4889/react-test npm run test
@@ -33,3 +20,16 @@ after_success:
  - docker push mohitpatel4889/multi-server
  - docker push mohitpatel4889/multi-worker
 
+deploy:
+  edge: true
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "multi-docker"
+  env: "MultiDocker-env"  
+  bucket_name: "elasticbeanstalk-us-east-2-396372329757"
+  bucket_path: "multi-docker"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
